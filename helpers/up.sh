@@ -22,11 +22,9 @@ oldubuntu="^(10\.|12\.|13\.|14\.|15\.|16\.|17\.|18\.10|19\.|20\.10|21\.)"
 # oldubuntu="^(10\.|12\.|13\.|14.10|15\.|16.10|17\.04)"
 NOSOCAT=""
 OAPTMIRROR="${OAPTMIRROR:-}"
-CENTOS_OLDSTABLE=7
+CENTOS_OLDSTABLE=8
 OYUMMIRROR="${OYUMMIRROR:-}"
 NYUMMIRROR="${NYUMMIRROR:-}"
-OCENTOSMIRROR="${OCENTOSMIRROR:-mirror.centos.org}"
-NCENTOSMIRROR="${NCENTOSMIRROR:-vault.centos.org}"
 OUBUNTUMIRROR="${OUBUNTUMIRROR:-old-releases.ubuntu.com}"
 ODEBIANMIRROR="${ODEBIANMIRROR:-archive.debian.org}"
 NDEBIANMIRROR="${NDEBIANMIRROR:-http.debian.net|httpredir.debian.org|deb.debian.org}"
@@ -64,7 +62,14 @@ if [ "x${DISTRIB_ID}" = "xcentos" ] && ( echo  "${DISTRIB_MAJOR}" | grep -Eq "^(
     sed -i 's/^mirrorlist/#mirrorlist/g;s|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 fi
 if ( echo $DISTRIB_ID | grep -E -iq "centos|red|fedora" );then
-    if (echo $DISTRIB_ID|grep -E -iq centos) && [ $DISTRIB_RELEASE -le $CENTOS_OLDSTABLE ];then
+    if (echo $DISTRIB_ID|grep -E -iq centos);then
+        if [ $DISTRIB_RELEASE -le $CENTOS_OLDSTABLE ];then
+            OCENTOSMIRROR="${OCENTOSMIRROR:-vault.centos.org}"
+            NCENTOSMIRROR="${NCENTOSMIRROR:-mirror.centos.org}"
+        else
+            OCENTOSMIRROR="${OCENTOSMIRROR:-mirror.centos.org}"
+            NCENTOSMIRROR="${NCENTOSMIRROR:-vault.centos.org}"
+        fi
         OYUMMIRROR="${OCENTOSMIRROR}"
         NYUMMIRROR="${NCENTOSMIRROR}"
     fi
