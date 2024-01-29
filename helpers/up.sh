@@ -21,17 +21,17 @@ DISTRIB_RELEASE=
 oldubuntu="^(10\.|12\.|13\.|14\.|15\.|16\.|17\.|18\.10|19\.|20\.10|21\.)"
 # oldubuntu="^(10\.|12\.|13\.|14.10|15\.|16.10|17\.04)"
 NOSOCAT=""
-OAPTMIRROR="${OAPTMIRROR:-}"
 CENTOS_OLDSTABLE=8
+OAPTMIRROR="${OAPTMIRROR:-}"
 OYUMMIRROR="${OYUMMIRROR:-}"
 NYUMMIRROR="${NYUMMIRROR:-}"
 OUBUNTUMIRROR="${OUBUNTUMIRROR:-old-releases.ubuntu.com}"
 ODEBIANMIRROR="${ODEBIANMIRROR:-archive.debian.org}"
 NDEBIANMIRROR="${NDEBIANMIRROR:-http.debian.net|httpredir.debian.org|deb.debian.org}"
+NUBUNTUMIRROR="${NUBUNTUMIRROR:-archive.ubuntu.com|security.ubuntu.com}"
 SNCENTOSMIRROR="$(echo "${NCENTOSMIRROR}"|sed -re "s/\|.*//g")"
 SNDEBIANMIRROR="$(echo "${NDEBIANMIRROR}"|sed -re "s/\|.*//g")"
 SNUBUNTUMIRROR="$(echo "${NUBUNTUMIRROR}"|sed -re "s/\|.*//g")"
-NUBUNTUMIRROR="${NUBUNTUMIRROR:-archive.ubuntu.com|security.ubuntu.com}"
 yuminstall () {
     if (yum --version >/dev/null 2>&1 );then
         ( vv yum -y install $@ || vv yum --disablerepo=epel -y install $@ ) || /bin/true
@@ -63,7 +63,10 @@ if [ "x${DISTRIB_ID}" = "xcentos" ] && ( echo  "${DISTRIB_MAJOR}" | grep -Eq "^(
 fi
 if ( echo $DISTRIB_ID | grep -E -iq "centos|red|fedora" );then
     if (echo $DISTRIB_ID|grep -E -iq centos);then
-        if [ $DISTRIB_RELEASE -le $CENTOS_OLDSTABLE ];then
+        if [ "$DISTRIB_RELEASE" = "7" ];then
+            OCENTOSMIRROR="${OCENTOSMIRROR:-mirror.centos.org}"
+            NCENTOSMIRROR="${NCENTOSMIRROR:-vault.centos.org}"
+        elif [ $DISTRIB_RELEASE -le $CENTOS_OLDSTABLE ];then
             OCENTOSMIRROR="${OCENTOSMIRROR:-vault.centos.org}"
             NCENTOSMIRROR="${NCENTOSMIRROR:-mirror.centos.org}"
         else
@@ -173,14 +176,16 @@ if ( echo $DISTRIB_ID | grep -E -iq "debian|mint|ubuntu" );then
     fi
     # 16.04/14.04 is not yet on old mirrors and were switched back to regular mirrors
     if [ "x$OAPTMIRROR" != "x" ];then
-        echo "Patching APT to use $OAPTMIRROR" >&2
         printf 'Acquire::Check-Valid-Until no;\nAPT{ Get { AllowUnauthenticated "1"; }; };\n\n'>/etc/apt/apt.conf.d/nogpgverif
         if (echo $DISTRIB_RELEASE |grep -E -iq "14.04|16.04");then
+            echo "Patching APT to use $SNAPTMIRROR" >&2
             sed -i -r \
                 -e 's/^(deb.*ubuntu)\/?(.*-(security|backport|updates).*)/#\1\/\2/g' \
                 -e 's!'$OAPTMIRROR'!'$SNAPTMIRROR'!g' \
                 $( find /etc/apt/sources.list* -type f; )
+            echo "deb http://$SNAPTMIRROR/ubuntu/ $DISTRIB_CODENAME-security main restricted universe multiverse" >> /etc/apt/sources.list
          else
+            echo "Patching APT to use $OAPTMIRROR" >&2
             sed -i -r \
                 -e 's/^(deb.*ubuntu)\/?(.*-(security|backport|updates).*)/#\1\/\2/g' \
                 -e 's!'$NAPTMIRROR'!'$OAPTMIRROR'!g' \
@@ -192,7 +197,6 @@ if ( echo $DISTRIB_ID | grep -E -iq "debian|mint|ubuntu" );then
        ( (echo $DISTRIB_ID|grep -E -iq debian) && [ -e $pglist ] && [ $DISTRIB_RELEASE -le $PG_DEBIAN_OLDSTABLE ]; );then
         if (dpkg -l|grep -vq apt-transport-https);then sed -i -re "s/^(deb.*https:.*)/#\1 #httpsfix/g" $(find /etc/apt/sources.list* -type f);fi
         apt-get update || true
-        while true;do sleep 123;done
         if ! (apt-get install -y ca-certificates apt-transport-https apt bzip2);then
             apt-get full-upgrade -y
             apt-get install -y ca-certificates apt-transport-https apt bzip2
