@@ -235,12 +235,11 @@ SKIP_PRE="((redis|node|ruby|php|golang|python|mariadb|mysql|postgres|solr|elasti
 SKIP_OS="(((archlinux|suse|centos|fedora|redhat|alpine|debian|ubuntu|oldstable|oldoldstable):.*[0-9]{8}.*)"
 SKIP_OS="$SKIP_OS|((node):[0-9]+[0-9]+\.[0-9]+.*)"
 SKIP_OS="$SKIP_OS|((debian|redis):[0-9]+\.[0-9]+.*)"
-SKIP_OS="$SKIP_OS|(centos:.\..\.....|centos.\..\.....)"
+SKIP_OS="$SKIP_OS|(centos:.\..\.....|centos.\..\.....)|(centos:(centos)?5)|centos6\."
 SKIP_OS="$SKIP_OS|(alpine:.\.[0-9]+\.[0-9]+)"
 SKIP_OS="$SKIP_OS|(debian:(6.*|squeeze))"
 SKIP_OS="$SKIP_OS|(ubuntu:(([0-9][0-9]\.[0-9][0-9]\..*)|(14.10|12|10|11|13|15)))"
 SKIP_OS="$SKIP_OS|(lucid|maverick|natty|precise|quantal|raring|saucy)"
-SKIP_OS="$SKIP_OS|(centos:(centos)?5)"
 SKIP_OS="$SKIP_OS|(fedora.*(modular|21))"
 SKIP_OS="$SKIP_OS|(traefik:((camembert|cancoillotte|cantal|chevrotin|faisselle|livarot|maroilles|montdor|morbier|picodon|raclette|reblochon|roquefort|tetedemoine)(-alpine)?|rc.*|(v?([0-9]+\.[0-9]+\.).*$)))"
 SKIP_OS="$SKIP_OS|(minio.*(armhf|aarch))"
@@ -257,10 +256,12 @@ SKIPPED_TAGS="$SKIP_TF|$SKIP_MINOR_OS|$SKIP_NODE|$SKIP_DOCKER|$SKIP_MINIO|$SKIP_
 CURRENT_TS=$(date +%s)
 IMAGES_SKIP_NS="((mailhog|postgis|pgrouting(-bare)?|^library|dejavu|(minio/(minio|mc))))"
 
-SKIPPED_TAGS="$SKIPPED_TAGS|centos6\."
+CENTOS_SKIPPED_TAGS="library/centos:(latest|7|8|6\..*|3|5|2|1|.\..\.....|centos.\..\.....|centos(7|8|6|5).*)|tgagor/centos:(1|2|3)"
+SKIPPED_TAGS="$CENTOS_SKIPPED_TAGS"
 
 default_images="
 library/centos
+tgagor/centos
 "
 ONLY_ONE_MINOR="postgres|elasticsearch|nginx"
 PROTECTED_TAGS="corpusops/rsyslog"
@@ -284,8 +285,10 @@ NODE_TOP="$(echo $(find_top_node))"
 MAILU_VERSiON=1.7
 
 BATCHED_IMAGES="\
-library/centos/latest\
- library/centos/7::7
+tgagor/centos/stream tgagor/centos/latest\
+ tgagor/centos/9 tgagor/centos/stream9::30
+tgagor/centos/7 tgagor/centos/centos7\
+ tgagor/centos/8 tgagor/centos/centos8 tgagor/centos/stream8::30
 "
 SKIP_REFRESH_ANCESTORS=${SKIP_REFRESH_ANCESTORS-}
 
