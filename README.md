@@ -5,4 +5,4 @@
 
 | original   | wrapped  |
 |------------|-----------|
-| [library/centos](https://hub.docker.com/_/centos)                         | [corpusops/centos](https://hub.docker.com/r/corpusops/centos)                   |
+| [library/centos](https://hub.docker.com/_/centos)                         | [corpusops/centos-bare](https://hub.docker.com/r/corpusops/centos-bare)                   |
