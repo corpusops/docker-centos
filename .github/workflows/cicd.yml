@@ -66,7 +66,7 @@ jobs:
       matrix:
         IMAGES:
         - "tgagor/centos/stream tgagor/centos/latest tgagor/centos/9 tgagor/centos/stream9"
-        - "tgagor/centos/7 tgagor/centos/centos7 tgagor/centos/8 tgagor/centos/centos8 tgagor/centos/stream8"
+        - "tgagor/centos/7 tgagor/centos/8 tgagor/centos/stream8"
         #- "corpusops/test/a corpusops/test/b corpusops/test/c"
         # all images that werent explicitly told to be built would be built in the next batches
         # we span them onto N jobs

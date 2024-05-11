@@ -6,3 +6,9 @@
 | original   | wrapped  |
 |------------|-----------|
 | [library/centos](https://hub.docker.com/_/centos)                         | [corpusops/centos-bare](https://hub.docker.com/r/corpusops/centos-bare)                   |
+
+unsupported tags:
+    - `centosX*`
+    - `*6*`
+    - `*5*`
+    - `{X}.*.*`

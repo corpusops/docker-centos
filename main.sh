@@ -256,7 +256,7 @@ SKIPPED_TAGS="$SKIP_TF|$SKIP_MINOR_OS|$SKIP_NODE|$SKIP_DOCKER|$SKIP_MINIO|$SKIP_
 CURRENT_TS=$(date +%s)
 IMAGES_SKIP_NS="((mailhog|postgis|pgrouting(-bare)?|^library|dejavu|(minio/(minio|mc))))"
 
-CENTOS_SKIPPED_TAGS="library/centos:(latest|7|8|6\..*|3|5|2|1|.\..\.....|centos.\..\.....|centos(7|8|6|5).*)|tgagor/centos:(1|2|3)"
+CENTOS_SKIPPED_TAGS="library/centos:(latest|7|8|6\..*|3|5|2|1|.\..\.....|centos.\..\.....|centos(7|8|6|5).*)|tgagor/centos:([1-3]|centos([0-9]))"
 SKIPPED_TAGS="$CENTOS_SKIPPED_TAGS"
 
 default_images="
