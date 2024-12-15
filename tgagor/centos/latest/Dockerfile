@@ -1,4 +1,4 @@
-FROM tgagor/centos:latest
+FROM tgagor/centos:latest AS final
 ARG DO_UPDATE=y
 ARG NONINTERACTIVE=y
 ARG DEBIAN_FRONTEND=noninteractive

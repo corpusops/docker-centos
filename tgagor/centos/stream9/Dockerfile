@@ -1,4 +1,4 @@
-FROM tgagor/centos:stream9
+FROM tgagor/centos:stream9 AS final
 ARG DO_UPDATE=y
 ARG NONINTERACTIVE=y
 ARG DEBIAN_FRONTEND=noninteractive

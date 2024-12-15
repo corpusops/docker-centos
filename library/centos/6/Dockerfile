@@ -1,4 +1,4 @@
-FROM library/centos:6
+FROM library/centos:6 AS final
 ARG DO_UPDATE=y
 ARG NONINTERACTIVE=y
 ARG DEBIAN_FRONTEND=noninteractive
