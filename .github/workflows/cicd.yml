@@ -65,13 +65,14 @@ jobs:
       fail-fast: false
       matrix:
         IMAGES:
-        - "tgagor/centos/stream tgagor/centos/latest tgagor/centos/9 tgagor/centos/stream9"
-        - "tgagor/centos/7 tgagor/centos/8 tgagor/centos/stream8"
+        - "tgagor/centos/latest tgagor/centos/stream"
+        - "tgagor/centos/9 tgagor/centos/stream9"
+        - "tgagor/centos/8 tgagor/centos/centos8 tgagor/centos/stream8"
+        - "tgagor/centos/7 tgagor/centos/centos7"
         #- "corpusops/test/a corpusops/test/b corpusops/test/c"
         # all images that werent explicitly told to be built would be built in the next batches
         # we span them onto N jobs
-        - "zleftover:1/2"
-        - "zleftover:2/2"
+        - "zleftover:1/1"
 on:
   push:
   workflow_dispatch:

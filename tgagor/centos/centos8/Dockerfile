@@ -1,6 +1,6 @@
-ARG ANCESTOR=tgagor/centos:7
+ARG ANCESTOR=tgagor/centos:centos8
 ARG RSYNC=corpusops/rsync
-FROM tgagor/centos:7 AS final
+FROM tgagor/centos:centos8 AS final
 ARG DO_UPDATE=y
 ARG NONINTERACTIVE=y
 ARG DEBIAN_FRONTEND=noninteractive
